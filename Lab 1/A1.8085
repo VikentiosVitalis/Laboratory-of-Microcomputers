@@ -1,0 +1,40 @@
+		LXI B,03E8H	
+
+START:		IN 20H		
+		RAL	
+		JNC START	
+		RAR	
+		ANI 0FH	
+		MOV D,A	
+		INR D
+		MVI A,00H	
+
+CNTUP:		CMA		
+		OUT 30H	
+		CALL DELB	
+		CMA		
+		INR A		
+		CALL STATIC	
+		CMP D		
+		JC CNTUP	
+
+		DCR A		
+		DCR A
+CNTDN:		CMA		
+		OUT 30H	
+		CALL DELB	
+		CMA		
+		DCR A		
+		CALL STATIC	
+		CPI 00H	
+		JNZ CNTDN	
+		JMP START 	
+		
+STATIC:	PUSH PSW	
+STOP:		IN 20H		
+		RAL		
+		JNC STOP	
+		POP PSW	
+		RET
+		
+		END
